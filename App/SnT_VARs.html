@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>A Non-Technical Introduction to Vector AutoRegressions</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto">
+
+<script>
+    // Info Boxes
+    var first_load = true;
+    function on_load() {
+        var info_boxes = document.getElementsByClassName('info');
+        var i;
+        for (i=0; i<info_boxes.length; i++){
+            info_boxes[i].setAttribute('id', 'info-' + i);
+            info_boxes[i].insertAdjacentHTML('beforebegin',
+            `<button class="info-button" id="info-btn-${i}" onclick="trigger_info(${i})"> Additional Info</button>`);
+        }
+    }
+
+    function trigger_info(i){
+        var info_box = document.getElementById(`info-${i}`);
+        var btn = document.getElementById(`info-btn-${i}`)
+        btn.classList.toggle("info-button-active");
+        if (info_box.style.maxHeight){
+            info_box.style.maxHeight = null;
+            info_box.style.paddingBottom = 0;
+            info_box.style.paddingTop = 0;
+        }
+        else {
+            info_box.style.maxHeight = info_box.scrollHeight + "px";
+            info_box.style.paddingBottom = "50px";
+            info_box.style.paddingTop = "50px";
+        }
+    }
+    // End Info Boxes
+
+    // Navigation
+    function openNav() {
+        document.getElementById("section-TOC").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("section-TOC").style.width = "0";
+    }
+
+    window.addEventListener('click', function(e){
+        if(!document.getElementById('section-TOC').contains(e.target) && !document.getElementById('opener').contains(e.target)) {
+            closeNav();
+        }
+    });
+    // End Navidation
+
+    $(document).on('shiny:busy', function(event) {
+        let loader = document.getElementById('loader-container');
+        loader.style.display = "flex";
+    }); 
+    $(document).on('shiny:idle', function(event) {
+        let loader = document.getElementById('loader-container');
+        loader.style.display = null;
+        if (first_load){
+            first_load = false;
+            on_load();
+        }
+    });
+
+
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<link rel="stylesheet" href="SnT.css" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+<span class="material-icons" onclick="openNav()" id="opener">
+    menu
+</span>
+
+<div id="loader-container">
+    <span>Updating Document: </span>
+    <div id="loader"></div>
+</div>
+
+
+<h1 class="title toc-ignore">A Non-Technical Introduction to Vector AutoRegressions</h1>
+
+
+<div id="section-TOC">
+<ul>
+<li><a href="#section-introduction">Introduction</a></li>
+<li><a href="#section-estimation">Estimation</a></li>
+<li><a href="#section-forecasting">Forecasting</a></li>
+<li><a href="#section-impulse-response-analysis">Impulse Response Analysis</a></li>
+</ul>
+</div>
+
+<div id="section-introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius nunc ipsum, a interdum ante tempus sit amet. Sed aliquam felis porttitor congue luctus. Aenean sit amet neque in tortor vehicula ullamcorper nec ac est. Quisque consequat finibus nisi, non egestas justo suscipit dapibus. Suspendisse venenatis eros mi, sit amet commodo risus tristique sit amet. Aliquam ultrices erat at nisi egestas accumsan et vel est. Nunc ante velit, auctor vel congue nec, dapibus vitae augue. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac convallis metus.</p>
+<div class="control-full-size">
+<div class="form-group shiny-input-container" style="width:auto;">
+<label class="control-label" id="seed-label" for="seed">Set a seed:</label>
+<input id="seed" type="number" class="form-control" value="6150533" min="100" max="1e+10"/>
+</div>
+</div>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+<div class="info">
+<ul>
+<li>How are VARs written mathematically?</li>
+<li>How is the data here simulated?</li>
+</ul>
+</div>
+<div class="control-full-size">
+<div id="out7ce7e0afb919488c" class="shiny-html-output"></div>
+</div>
+<div id="out0622d2d72b3b583d" class="shiny-plot-output" style="width:100%;"></div>
+</div>
+<div id="section-estimation" class="section level2">
+<h2>Estimation</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius nunc ipsum, a interdum ante tempus sit amet. Sed aliquam felis porttitor congue luctus. Aenean sit amet neque in tortor vehicula ullamcorper nec ac est. Quisque consequat finibus nisi, non egestas justo suscipit dapibus. Suspendisse venenatis eros mi, sit amet commodo risus tristique sit amet. Aliquam ultrices erat at nisi egestas accumsan et vel est. Nunc ante velit, auctor vel congue nec, dapibus vitae augue. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac convallis metus.</p>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+<div class="control-full-size">
+<p><div class="form-group shiny-input-container" style="width:auto;">
+<label class="control-label" id="vars_p-label" for="vars_p">Maximum lag length:</label>
+<input class="js-range-slider" id="vars_p" data-skin="shiny" data-min="1" data-max="5" data-from="3" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number"/>
+</div><div id="outaa2662ecbbcb89d9" class="shiny-html-output"></div></p>
+</div>
+<div id="out06bf730f1f7468f0" class="shiny-plot-output" style="width:100%;"></div>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius nunc ipsum, a interdum ante tempus sit amet. Sed aliquam felis porttitor congue luctus. Aenean sit amet neque in tortor vehicula ullamcorper nec ac est. Quisque consequat finibus nisi, non egestas justo suscipit dapibus. Suspendisse venenatis eros mi, sit amet commodo risus tristique sit amet. Aliquam ultrices erat at nisi egestas accumsan et vel est. Nunc ante velit, auctor vel congue nec, dapibus vitae augue. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac convallis metus.</p>
+<div class="info">
+<ul>
+<li>How are VARs estimated?</li>
+<li>What is important to check after an estimation?
+<ul>
+<li>Stability! Why?</li>
+<li>MSE</li>
+</ul></li>
+</ul>
+</div>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+</div>
+<div id="section-forecasting" class="section level2">
+<h2>Forecasting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius nunc ipsum, a interdum ante tempus sit amet. Sed aliquam felis porttitor congue luctus. Aenean sit amet neque in tortor vehicula ullamcorper nec ac est. Quisque consequat finibus nisi, non egestas justo suscipit dapibus. Suspendisse venenatis eros mi, sit amet commodo risus tristique sit amet. Aliquam ultrices erat at nisi egestas accumsan et vel est. Nunc ante velit, auctor vel congue nec, dapibus vitae augue. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac convallis metus.</p>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+<div id="outc6c40a473ab1c0c9" class="shiny-plot-output" style="width:100%;"></div>
+<div class="control-full-size">
+<p><div class="form-group shiny-input-container" style="width:auto;">
+<label class="control-label" id="fcst_n_ahead-label" for="fcst_n_ahead">Forecast Horizon:</label>
+<input class="js-range-slider" id="fcst_n_ahead" data-skin="shiny" data-min="1" data-max="20" data-from="4" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number"/>
+<div class="slider-animate-container">
+<a href="#" class="slider-animate-button" data-target-id="fcst_n_ahead" data-interval="1000" data-loop="FALSE">
+<span class="play">
+<i class="glyphicon glyphicon-play" role="presentation" aria-label="play icon"></i>
+</span>
+<span class="pause">
+<i class="glyphicon glyphicon-pause" role="presentation" aria-label="pause icon"></i>
+</span>
+</a>
+</div>
+</div><div class="form-group shiny-input-container" style="width:auto;">
+<label class="control-label" id="fcst_p-label" for="fcst_p">Maximum lag length:</label>
+<input class="js-range-slider" id="fcst_p" data-skin="shiny" data-min="1" data-max="5" data-from="3" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number"/>
+</div><div id="outf76f24f0c7e6ccdd" class="shiny-html-output"></div></p>
+</div>
+<div class="info">
+<ul>
+<li>Why do long horizon forecasts look so weird?</li>
+<li>How are confidence intercals formed?</li>
+<li>What happens when VAR is not stable?</li>
+</ul>
+</div>
+</div>
+<div id="section-impulse-response-analysis" class="section level2">
+<h2>Impulse Response Analysis</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius nunc ipsum, a interdum ante tempus sit amet. Sed aliquam felis porttitor congue luctus. Aenean sit amet neque in tortor vehicula ullamcorper nec ac est. Quisque consequat finibus nisi, non egestas justo suscipit dapibus. Suspendisse venenatis eros mi, sit amet commodo risus tristique sit amet. Aliquam ultrices erat at nisi egestas accumsan et vel est. Nunc ante velit, auctor vel congue nec, dapibus vitae augue. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam ac convallis metus.</p>
+<div class="info">
+<ul>
+<li>What does reduced form mean and why is it not what we want?</li>
+<li>The maths behind IRF</li>
+</ul>
+</div>
+<div id="outcf606de070af4a01" class="shiny-plot-output" style="width:100%;height:400px;"></div>
+<div class="control-full-size">
+<p><div id="outcc5df6f4deb8638b" class="shiny-html-output"></div><div id="outcb74fec50b3046f5" class="shiny-html-output"></div><div class="form-group shiny-input-container" style="width:auto;">
+<div class="checkbox">
+<label>
+<input id="ortho.irf" type="checkbox"/>
+<span>Orthogonalise?</span>
+</label>
+</div>
+</div></p>
+</div>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+<div class="info">
+<ul>
+<li>What kind of identification schemes exist?
+<ul>
+<li>Structural</li>
+<li>Theoretical</li>
+<li>etc.</li>
+</ul></li>
+<li>What does unexpected / exogeneous shock mean?</li>
+</ul>
+</div>
+<div id="out9920af8c60edb793" class="shiny-html-output"></div>
+<div id="out392ad92ab2ea56e7" class="shiny-text-output"></div>
+<p>Vestibulum in neque eget mi imperdiet vestibulum in a ipsum. In tempus volutpat magna, et interdum lorem ornare vitae. Pellentesque pellentesque lorem ac lacus cursus porttitor. In vestibulum ante quis neque dapibus, at tincidunt diam dapibus. Fusce suscipit tellus volutpat accumsan viverra. Donec nisl leo, faucibus vel dictum sed, sollicitudin a nunc. Nunc semper faucibus semper. Aliquam aliquam hendrerit sagittis. Sed erat orci, ultricies ac faucibus maximus, rhoncus porta sem. Maecenas feugiat eros non ornare accumsan. Praesent venenatis metus enim, quis lobortis lacus fermentum id. Pellentesque dignissim rhoncus commodo. Suspendisse vulputate mauris dapibus ante hendrerit, non rutrum sem varius. Sed efficitur tempor mauris, vel tristique ex porttitor sit amet.</p>
+
+<script type="application/shiny-prerendered" data-context="server-start">
+knitr::opts_chunk$set(echo = FALSE, 
+                      dev = "tiff")
+
+#renderPlot <- function(expr) shiny::renderPlot(expr, width = 2000, height = 500)
+
+rm(list = ls())
+if(!require(vars)) install.packages("vars"); require(vars);
+if(!require(shiny)) install.packages("shiny"); require(shiny);
+if(!require(sortable)) install.packages("sortable"); require(sortable);
+if(!require(tidyverse)) install.packages("tidyverse"); require(tidyverse);
+source("helpers.R")
+# Setting up everything that is statitic
+# Simulating a VAR
+set.seed(6150533)
+N.true <- 3
+periods.true <- 200
+p.true <- 2
+scale_factor <- 100 # Only to make things look better 
+# coef_mat.true <- create_rand_coef_mat(N = N.true, p = p.true, max_eigval = 0.99,
+#                                       min = 0, max = 1)
+# data <- sim_VAR(periods = periods.true, N = N.true, coef_mat = coef_mat.true,
+#                 sd = 0.01, burnin = 1000, init_y = rep(10, N.true*p.true))
+# data <- data*scale_factor
+
+# mod <- vars::VAR(data, p = p.true, type = "none")
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+using.seed <- 6150533
+data <- NULL
+
+get_data <- reactive({
+  set.seed(input$seed)
+  coef_mat.true <- create_rand_coef_mat(N = N.true, p = p.true, max_eigval = 0.99, 
+                                      min = 0, max = 1)
+  data <- sim_VAR(periods = periods.true, N = N.true, coef_mat = coef_mat.true,
+                sd = 0.01, burnin = 1000, init_y = rep(10, N.true*p.true))
+  data <- data*scale_factor
+  colnames(data) <- paste0(sample(LETTERS, 1), 1:ncol(data))
+  as.data.frame(data)
+})
+</script>
+ <!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="dependencies">
+{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files","pkgVersion"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["9.12.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/highlightjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["default.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2.3"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-javascript"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/ion.rangeSlider.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["strftime"]},{"type":"character","attributes":{},"value":["0.9.2"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/strftime"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["strftime-min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-css"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/ion.rangeSlider.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-javascript"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/ion.rangeSlider.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["strftime"]},{"type":"character","attributes":{},"value":["0.9.2"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/strftime"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["strftime-min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-css"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/ion.rangeSlider.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-javascript"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/ion.rangeSlider.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["strftime"]},{"type":"character","attributes":{},"value":["0.9.2"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/strftime"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["strftime-min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ionrangeslider-css"]},{"type":"character","attributes":{},"value":["2.3.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["shared/ionrangeslider"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/ion.rangeSlider.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]}]}
+</script>
+<!--/html_preserve-->
+<!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="execution_dependencies">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90]}},"value":[{"type":"character","attributes":{},"value":["assertthat","backports","base","blob","broom","bslib","cellranger","cli","colorspace","compiler","crayon","datasets","DBI","dbplyr","digest","dplyr","ellipsis","evaluate","fansi","fastmap","forcats","fs","generics","ggplot2","glue","graphics","grDevices","grid","gtable","haven","hms","htmltools","htmlwidgets","httpuv","httr","jquerylib","jsonlite","knitr","later","lattice","learnr","lifecycle","lmtest","lubridate","magrittr","markdown","MASS","methods","mime","modelr","munsell","nlme","pillar","pkgconfig","promises","purrr","R6","Rcpp","readr","readxl","reprex","rlang","rmarkdown","rprojroot","rstudioapi","rvest","sandwich","sass","scales","shiny","sortable","stats","stringi","stringr","strucchange","tibble","tidyr","tidyselect","tidyverse","tools","urca","utils","vars","vctrs","withr","xfun","xml2","xtable","yaml","zoo"]},{"type":"character","attributes":{},"value":["0.2.1","1.1.10","4.0.2","1.2.1","0.7.0","0.2.4","1.1.0","2.2.0","2.0-0","4.0.2","1.3.4","4.0.2","1.1.0","1.4.4","0.6.27","1.0.2","0.3.1","0.14","0.4.1","1.1.0","0.5.0","1.5.0","0.1.0","3.3.2","1.4.2","4.0.2","4.0.2","4.0.2","0.3.0","2.3.1","0.5.3","0.5.1.1","1.5.3","1.5.5","1.4.2","0.1.3","1.7.2","1.30","1.1.0.1","0.20-41","0.10.1","0.2.0","0.9-38","1.7.9","2.0.1","1.1","7.3-51.6","4.0.2","0.9","0.1.8","0.5.0","3.1-148","1.4.7","2.0.3","1.1.1","0.3.4","2.5.0","1.0.6","1.3.1","1.3.1","0.3.0","0.4.9","2.3","2.0.2","0.13","0.3.6","3.0-0","0.3.1","1.1.1","1.6.0","0.4.4","4.0.2","1.5.3","1.4.0","1.5-2","3.0.4","1.1.2","1.1.0","1.3.0","4.0.2","1.3-0","4.0.2","1.5-3","0.3.5","2.3.0","0.18","1.3.2","1.8-4","2.2.1","1.8-8"]}]}]}
+</script>
+<!--/html_preserve-->
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

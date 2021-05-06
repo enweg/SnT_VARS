@@ -1,0 +1,92 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto">
+
+<script>
+    // Info Boxes
+    var first_load = true;
+    function on_load() {
+        var info_boxes = document.getElementsByClassName('info');
+        var i;
+        for (i=0; i<info_boxes.length; i++){
+            info_boxes[i].setAttribute('id', 'info-' + i);
+            info_boxes[i].insertAdjacentHTML('beforebegin',
+            `<button class="info-button" id="info-btn-${i}" onclick="trigger_info(${i})"> Additional Info</button>`);
+        }
+    }
+
+    function trigger_info(i){
+        var info_box = document.getElementById(`info-${i}`);
+        var btn = document.getElementById(`info-btn-${i}`)
+        btn.classList.toggle("info-button-active");
+        if (info_box.style.maxHeight){
+            info_box.style.maxHeight = null;
+            info_box.style.paddingBottom = 0;
+            info_box.style.paddingTop = 0;
+        }
+        else {
+            info_box.style.maxHeight = info_box.scrollHeight + "px";
+            info_box.style.paddingBottom = "50px";
+            info_box.style.paddingTop = "50px";
+        }
+    }
+    // End Info Boxes
+
+    // Navigation
+    function openNav() {
+        document.getElementById("section-TOC").style.width = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("section-TOC").style.width = "0";
+    }
+
+    window.addEventListener('click', function(e){
+        if(!document.getElementById('section-TOC').contains(e.target) && !document.getElementById('opener').contains(e.target)) {
+            closeNav();
+        }
+    });
+    // End Navidation
+
+    // Variable Info
+    function openVarInfo() {
+        document.getElementById("var-info").style.width = "300px";
+    }
+
+    function closeVarInfo() {
+        document.getElementById("var-info").style.width = "0";
+    }
+
+    window.addEventListener('click', function(e){
+        if(!document.getElementById('var-info').contains(e.target) && !document.getElementById('var-info-btn').contains(e.target)) {
+            closeVarInfo();
+        }
+    });
+    // End Variable Info
+
+
+    // Triggering the loader every time something is being recalculated
+    $(document).on('shiny:recalculating', function(event) {
+        let loader = document.getElementById('loader-container');
+        loader.style.display = "flex";
+    });
+
+
+
+    /*$(document).on('shiny:busy', function(event) {
+        let loader = document.getElementById('loader-container');
+        loader.style.display = "flex";
+    }); */
+    $(document).on('shiny:idle', function(event) {
+        // Stopping the loader when we are idle
+        let loader = document.getElementById('loader-container');
+        loader.style.display = null;
+        if (first_load){
+            first_load = false;
+            on_load();
+        }
+    });
+
+
+</script>

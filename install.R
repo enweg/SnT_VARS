@@ -1,0 +1,6 @@
+install.packages("vars")
+install.packages("shiny")
+install.packages("sortable")
+install.packages("tidyverse")
+install.packages("igraph")
+install.packages("bootUR")

@@ -5,6 +5,7 @@ output:
     theme: NULL
     toc: true
     css: "SnT.css"
+    number_sections: true
     includes:
       before_body: drawer.html
       in_header: drawer_js.html
@@ -46,7 +47,7 @@ data <- data*scale_factor
 # mod <- vars::VAR(data, p = p.true, type = "none")
 ```
 
-## Introduction
+# Introduction
 
 In this notebook we will dive into **Vector AutoRegressive (VAR)** models. VAR models are often used in time series as an extension to AutoRegressive (AR) models. While AR models only model one time series at a time, VAR models model multiple series at a time. This allows VAR models to make forecasts for longer horizons without having to assume that some variables are *exogenous*. We will investigate this characteristic and many of the other features of VAR models in this notebook. However, before we get started, we need to set a *seed*. The seed allows us all to obtain the same results. Please fill in a seed below. You can also already observe how some of the graphs start changing. This might take a few seconds, so please be patient.
 
@@ -86,7 +87,7 @@ get_data <- reactive({
 ```{r}
 numericInput(
   "seed",
-  "Set a seed:",
+  "Set a seed (any Integer):",
   6150533,
   min = 100,
   max = 1e10,
@@ -97,7 +98,7 @@ numericInput(
 
 :::
 
-Using the seed above, we created a random data-set. Our data-set contains three variables. This might for example be investments, consumption, and GDP in an economic context. It could also be the price of three assets. The basic idea behind VAR models is that these series might be related to each others past. In the macro context, GDP might not just depend on past GDP, but also on past investments and consumption. In the asset context, the price for one asset might not just depend on the past price of that asset but also on the past price of the other assets. VARs allow us to model this interdependency in a more inclusive way than AR models do. 
+Using the seed above, we created a random data-set. Our data-set contains three variables. This might for example be investments, consumption, and GDP in an economic context. It could also be the price of three assets. The basic idea behind VAR models is that these series might be related to each other's past. In the macro context, GDP might not just depend on past GDP, but also on past investments and consumption. In the asset context, the price for one asset might not just depend on the past price of that asset but also on the past price of the other assets. VARs allow us to model this interdependency in a more inclusive way than AR models do. 
 
 
 In an AR model we would only be able to model one of the series and would have to assume that the others are exogenously given. This means, that we just, for some reason or another, have information on the other variables. VARs on the other hand model all variables at the same time. We therefore do not need to assume that any of the variables are exogenously given. This allows us to make longer horizon forecasts but also to investigate what an unexpected shock in one variable does to the others.
@@ -105,13 +106,13 @@ In an AR model we would only be able to model one of the series and would have t
 
 :::{.info}
 
-Mathematically, a VAR(p) is written in the form of 
+Mathematically, a VAR($p$) is written in the form of 
 
 $$
 y_t = \Phi_1 y_{t-1} + ... + \Phi_p y_{t-p} + \varepsilon_t
 $$
 
-where $y_t$ is a $N\times 1$ vector of the variables that are being modeled, $\Phi_i$ is a $N\times N$ matrix of coefficients, linking the $i^{th}$ lag of each variable to each other. $\varepsilon_t$ is often assumed to be white noise.
+where $y_t$ is a $N\times 1$ vector of the variables that are being modelled, $\Phi_i$ is a $N\times N$ matrix of coefficients, linking the $i^{th}$ lag of each variable to each other. $\varepsilon_t$ is often assumed to be white noise.
 
 In the economic context where we model GDP, consumption, and investments together, and assume that we have a *memory* of two periods, hence a VAR(2) model, the above can be written as
 
@@ -120,11 +121,11 @@ $$
 \Phi_1 \left[\begin{array}[l] \text{GDP}_{t-1} \\ \text{CONS}_{t-1} \\ \text{INV}_{t-1} \end{array}\right] + 
 \Phi_2 \left[\begin{array}[l] \text{GDP}_{t-2} \\ \text{CONS}_{t-2} \\ \text{INV}_{t-2} \end{array}\right] + \varepsilon_t
 $$
-This is equivalent to saying that GDP today can be modeled as depending on GDP in the last period, but also two periods ago. Moreover, GDP in this period also depends on consumption and investment in the last two periods. Similarly for consumption and investments. This kind of behaviour is often present in economics and business, since processes are often sluggish and need time to adjust to changes. For example, investments might lag behind GDP, because it takes time for businesses to make investment decisions. Thus, even if GDP and hence in a simple world the income of firms increases in this period, investments might not increase in the same period, because management first needs to make a decision on what to invest in, and this might take one, two, or even more periods.
+This is equivalent to saying that GDP today can be modelled as depending on GDP in the last period, but also two periods ago. Moreover, GDP in this period also depends on consumption and investment in the last two periods. Similarly for consumption and investments. This kind of behaviour is often present in economics and business, since processes are often sluggish and need time to adjust to changes. For example, investments might lag behind GDP, because it takes time for businesses to make investment decisions. Thus, even if GDP and hence in a simple world the income of firms increases in this period, investments might not increase in the same period, because management first needs to make a decision on what to invest in, and this might take one, two, or even more periods.
 
-The problem with the above representation of a VAR(p) model is, that it quickly becomes messy and difficult to analyse. For example, written in the general form, it is difficult to say whether a VAR(p) model is *stable* and *stationary*. We will come back to what these two mean.
+The problem with the above representation of a VAR($p$) model is, that it quickly becomes messy and difficult to analyse. For example, written in the general form, it is difficult to say whether a VAR($p$) model is *stable* and *stationary*. We will come back to what these two mean.
 
-In order to analyse the stability and stationarity of VAR(p) models, they are often written in what is called the *companion form*. The companion form is essentially just a stacked version of a VAR(p) model, stacked in such a way that it can be written as a VAR(1) model. For the GDP, consumption, and investments example, this looks like the following
+In order to analyse the stability and stationarity of VAR($p$) models, they are often written in what is called the *companion form*. The companion form is essentially just a stacked version of a VAR($p$) model, stacked in such a way that it can be written as a VAR(1) model. For the GDP, consumption, and investments example, this looks like the following
 
 $$
 \left[\begin{array} \text{GDP}_t \\ \text{CONS}_t \\ \text{INV}_t \\ 
@@ -134,7 +135,7 @@ $$
 \text{GDP}_{t-2} \\ \text{CONS}_{t-2} \\ \text{INV}_{t-2}\end{array}\right] + 
 \left[\begin{array}; \varepsilon_t \\ 0 \end{array}\right]
 $$
-Thus, our VAR(p) model for the real economy can also be written in a VAR(1) form by using the companion form. We can generalise it, and write every VAR(p) model in the form
+Thus, our VAR($p$) model for the real economy can also be written in a VAR(1) form by using the companion form. We can generalise it, and write every VAR($p$) model in the form
 
 $$
 \underbrace{\left[\begin{array}; y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+2} \\ y_{t-p+1}\end{array}\right]}_{\xi_t} = 
@@ -147,7 +148,7 @@ O_{N\times N} & O_{N\times N} & \dots & I_{N\times N} & O_{N\times N}\end{array}
 \underbrace{\left[\begin{array}; \varepsilon_t \\ 0 \\ \vdots \\ 0 \\ 0\end{array}\right]}_{\nu_t}
 $$
 
-We can use this companion form to investigate the stability of a VAR. A VAR(p) is stable, if all eigenvalues of $F$ are in absolute value less than one. Stability means, that a small change in one variable, e.g. through a shock, does not lead to an explosive process in which the model suddenly shoots off to infinity. If a VAR(p) is stable, and the error term, $\varepsilon_t$ is stationary, then the VAR(p) is stationary. Stationarity is explained later in the notebook.
+We can use this companion form to investigate the stability of a VAR. A VAR($p$) is stable, if all eigenvalues of $F$ are in absolute value less than one. Stability means, that a small change in one variable, e.g. through a shock, does not lead to an explosive process in which the model suddenly shoots off to infinity. If a VAR($p$) is stable, and the error term, $\varepsilon_t$ is stationary, then the VAR($p$) is stationary. Stationarity is explained later in the notebook.
 
 The simulated data in this notebook comes from a stable and stationary VAR(2) model, where $F$ is given below (Note: we rounded the coefficients to three decimals). If you want to check whether you understood the mathematical description, one nice exercise is to try to figure out what the relationship of the second variable in the simulated data set and the first variable is, e.g. if the second variable increases by one in this period, and everything else is the same, what happens in the next two periods to the first variable?
 
@@ -227,6 +228,7 @@ renderPlot({
   # if(is.null(selected_vars) | length(selected_vars)==0){
   #   selected_vars <- colnames(data)
   # }
+  if (length(input$selected_vars) == 0) stop("Please select at least one variable.")
   as_tibble(data) %>%
     dplyr::select_at(.vars = vars(as.character(input$selected_vars))) %>%
     dplyr::mutate(Time = 1:nrow(data)) %>%
@@ -240,15 +242,15 @@ renderPlot({
 )
 ```
 
-## Estimation
+# Estimation
 
 Note that all the series in the above plot are, what we call, stationary. In simple words, stationarity means that the mean/expected value of the series does not change over time. If our data had a clear time trend for example, then the data would not be stationary, because we would expect a different value next week than we do for this week. If your data shows any trends, then you first need to transform your data to stationarity. Once the data is stationary then you can estimate a VAR model.
 
 ::: {.info}
 
-We actually distinguish between strict stationarity and weak stationarity. Strict stationarity means that the distribution does not change over time. For example, if you take the points $(y_t, y_{t-1})$ then these are always distributed like the points $(y_{t-h}, y_{t-1-h})$ no matter what $h$ is. This actually also holds for any length of points.
+We actually distinguish between strict (strong) stationarity and weak (second-order) stationarity. Strict stationarity means that the distribution does not change over time. For example, if you take the points $(y_t, y_{t-1})$ then these are always distributed like the points $(y_{t-h}, y_{t-1-h})$ no matter what $h$ is. This actually also holds for any length of points.
 
-Since strict stationarity is a rather strong condition and is difficult to verify in practice, we often work with weak stationarity. In this notebook, if we speak of stationarity, then we mean weak staionarity. Weak stationrity actually implies more than what is written in the main text. The three conditions for weak stationarity are
+Since strict stationarity is a rather strong condition and is difficult to verify in practice, we often work with weak stationarity. In this notebook, if we speak of stationarity, then we mean weak stationarity. Weak stationarity actually implies more than what is written in the main text. The three conditions for weak stationarity are
 
 1. The mean must be the same for all time periods: $\mathbb{E}[y_t]=\mu$ for all $t$
 2. The second moment must be the same for all time periods: $\mathbb{E}[y_t^2]=\mu$ for all $t$. Together with condition one, this actually implies that the variance is the same for all time periods $t$
@@ -256,9 +258,9 @@ Since strict stationarity is a rather strong condition and is difficult to verif
 
 :::
 
-VAR models are often also written as **VAR(p)** to emphasise that they depend on a parameter, namely the lag or order $p$. This parameter, in rough terms, can be thought of as a tuning parameter. It determines the maximum lag included in the model. For example, if $p=2$, then we allow for two lags in our model. If $p=4$ and we have quarterly data, then we basically allow for lags up until a year ago. 
+VAR models are often also written as **VAR($p$)** to emphasise that they depend on a parameter, namely the lag or order $p$. This parameter, in rough terms, can be thought of as a tuning parameter. It determines the maximum lag included in the model. For example, if $p=2$, then we allow for two lags in our model. If $p=4$ and we have quarterly data, then we basically allow for lags up until a year ago. 
 
-Because VAR models have this dependency on p, choosing the right p can be quite crucial. You can play around in the graph below to see what the choice of p does to the estimate (Note: we always loose the first p observations of our data when estimating the VAR. Thus, if p is very large, then we only have very few actual observations to estimate the model).
+Because VAR models have this dependency on $p$, choosing the right $p$ can be quite crucial. You can play around in the graph below to see what the choice of $p$ does to the estimate (Note: we always loose the first $p$ observations of our data when estimating the VAR. Thus, if $p$ is very large, then we only have very few actual observations to estimate the model).
 
 ::: {.control-full-size}
 ```{r}
@@ -270,6 +272,7 @@ sliderInput("vars_p",
             step = 1,
             ticks = FALSE,
             width = "auto")
+
 renderUI({
   varSelectInput("vars_display_variable",
                label = "Variable to Show:",
@@ -312,7 +315,7 @@ renderPlot({
 }, height = 500)
 ```
 
-If you played around with the graph above, then you probably noticed that for small changes of p, the estimate does not seem to change much. However, if you increase p a lot, then the estimate fits the observed series better and better. In the limiting case one can always increase p so much that the fitted series fits the observed series perfectly. It is rather unlikely though that a model that perfectly fits in sample (on the data observed) does also forecast future values well. It is therefore important to choose the right $p$. Visual inspection is usually misleading, which is why several techniques have been developed to choose the right $p$, among which **Information Criteria** are the most popular. Information criteria find a trade-off between fit and which $p$ was chosen. They penalise high choices of $p$ and therefore prevent over-fitting. They also come with many more favourable characteristics. See the info box if you are intersted. In this notebook we will focus on information criteria, and will leave other methods to future discussions.
+If you played around with the graph above, then you probably noticed that for small changes of $p$, the estimate does not seem to change much. However, if you increase $p$ a lot, then the estimate fits the observed series better and better. In the limiting case one can always increase $p$ so much that the fitted series fits the observed series perfectly. It is rather unlikely though that a model that perfectly fits in sample (on the data observed) does also forecast future values well. It is therefore important to choose the right $p$. Visual inspection is usually misleading, which is why several techniques have been developed to choose the right $p$, among which **Information Criteria** are the most popular. Information criteria find a trade-off between fit and which $p$ was chosen. They penalise high choices of $p$ and therefore prevent over-fitting. They also come with many more favourable characteristics. See the info box if you are interested. In this notebook we will focus on information criteria, and will leave other methods to future discussions.
 
 ::: {.info}
 
@@ -329,11 +332,11 @@ Popular Choices of $c_T$ are
 2. $c_T = \log(T)$ which gives the Bayesian Information Criterion (BIC)
 3. $c_T = 2\log\log T$ which gives the Hannan-Quinn Information Criterion (HQ)
 
-One problem in statistics is that an information criterion cannot be optimal for two favourable characteristics: *Efficiency* and *Consistency*. An IC is efficient, if it results in a model whith the smallest expected forecasting error, an example of which is AIC. An IC is consistent, if the IC selects the true model with probability going to one. E.g. with a lot of data, the IC will select the right model. Examples of ICs that are consistent are BIC and HQ.
+One problem in statistics is that an information criterion cannot be optimal for two favourable characteristics: *Efficiency* and *Consistency*. An IC is efficient, if it results in a model with the smallest expected forecasting error, an example of which is AIC. An IC is consistent, if the IC selects the true model with probability going to one. E.g. with a lot of data, the IC will select the right model. Examples of ICs that are consistent are BIC and HQ.
 
 :::
 
-In this notebook we will only use information criteria but will touch upon time series cross validation based upon rolling window estimation, which could also be used as a selection procedure. Below is a standard output that `R` gives you. It shows the *Akaike Information Criterion (AIC)*, the *Hannan-Quinn Information Criterion (HQ)*, the *Schwarz Criterion (SC)* sometimes also referred to as the *Bayesian Information Criterion (BIC)* and the *Final Prediction Error (FPE)*. The first three are the most commonly used. One selects the p (lag length) that results in the smallest information criterion. 
+In this notebook we will only use information criteria but will touch upon time series cross validation based upon rolling window estimation, which could also be used as a selection procedure. Below is a standard output that `R` gives you. It shows the *Akaike Information Criterion (AIC)*, the *Hannan-Quinn Information Criterion (HQ)*, the *Schwarz Criterion (SC)* sometimes also referred to as the *Bayesian Information Criterion (BIC)* and the *Final Prediction Error (FPE)*. The first three are the most commonly used. One selects the $p$ (lag length) that results in the smallest information criterion. 
 
 
 ```{r}
@@ -344,11 +347,11 @@ renderPrint({
 ```
 
 
-Sometimes information criteria can disagree. If this happens, then one can either do cross validation after all, or decide to follow one of the information criteria. In the latter case, it is often helpful to refer to the different characteristics of the information criteria, and it is always good practice to see how sensitive forecasts and other findings are to changing p, e.g. to see what happens if one were to follow another information criterion.
+Sometimes information criteria can disagree. If this happens, then one can either do cross validation after all, or decide to follow one of the information criteria. In the latter case, it is often helpful to refer to the different characteristics of the information criteria, and it is always good practice to see how sensitive forecasts and other findings are to changing $p$, e.g. to see what happens if one were to follow another information criterion.
 
 ::: {.info}
 
-Once one has selected a lag length, p, the VAR(p) model can be estimated. One very useful result is that each equation can be estimated seperately by OLS. For example, if we determined a lag length of two for our economic example, then we could estimate the GDP equation just by running the following OLS regression
+Once one has selected a lag length, $p$, the VAR($p$) model can be estimated. One very useful result is that each equation can be estimated separately by OLS. For example, if we determined a lag length of two for our economic example, then we could estimate the GDP equation just by running the following OLS regression
 
 $$
 \begin{array}{ll}
@@ -359,7 +362,7 @@ $$
 
 :::
 
-When estimating VAR(p) models, we often assume that the error $\varepsilon_t$ is white noise, which means that the errors are uncorrelated across time but instantaneous/contemporaneous correlations among errors of the different equations is allowed. We can check this assumption to a certain extent visually by investigating the auto-correlation functions (ACF) and cross correlations of the residuals of our model. This is done in the figure below. 
+When estimating VAR($p$) models, we often assume that the error $\varepsilon_t$ is white noise, which means that the errors are uncorrelated across time but instantaneous/contemporaneous correlations among errors of the different equations is allowed. We can check this assumption to a certain extent visually by investigating the auto-correlation functions (ACF) and cross correlations of the residuals of our model. This is done in the figure below. 
 
 Since ACF plots show us the correlation of the residuals, for example for GDP, in this period with residuals of the same series $h$ periods ago, we would like to see that none of the bars in the ACF plots lie outside the chosen confidence interval (except the one at zero, which is always one). This is, because white noise errors do not have any significant auto-correlations.
 
@@ -417,7 +420,8 @@ renderPlot({
                 fill = um_cols("light-blue")) +
     geom_linerange(aes(Lag, ymin = 0, ymax = ACF), size = 1) +
     geom_hline(yintercept = 0, color = um_cols("dark-blue")) +
-    labs(title = title) +
+    labs(title = title, 
+         subtitle = paste0("Estimated Model: VAR(", input$vars_p, ")")) +
     theme_SnT()
 })
 
@@ -441,15 +445,15 @@ renderUI({
 
 :::
 
-## Forecasting
+# Forecasting
 
 VAR models can easily be used for forecasting. Two main strategies exist. The first and most often used one is recursive forecasting. The second and less frequent used one is direct forecasting. 
 
-Recursive forecasting first uses the last p observations in the data set to forecast the next observation. Then the last p-1 observations in the data set and the just forecasted observation are being used to forecast two periods ahead. This is repeated over and over again until the desired forecast horizon is reached. Direct forecasting, on the other hand, uses only observations in the data set to forecast. So for a given forecast horizon $h>1$, the direct forecast approach re-estimates the multivariate model with $y_{t+h-1}$ as dependent variable instead of $y_t$.
+Recursive forecasting first uses the last $p$ observations in the data set to forecast the next observation. Then the last $p-1$ observations in the data set and the just forecasted observation are being used to forecast two periods ahead. This is repeated over and over again until the desired forecast horizon is reached. Direct forecasting, on the other hand, uses only observations in the data set to forecast. So for a given forecast horizon $h>1$, the direct forecast approach re-estimates the multivariate model with $y_{t+h-1}$ as dependent variable instead of $y_t$.
 
-Note that recursive forecasting is only possible because we model all series at once. If we instead would use an AR model and would consider two of the three series as exogenous, then we could not use recursive forecasting, because we would not know the future observations of the exogeneous variables. This is a clear advantage of VAR models over AR models. 
+Note that recursive forecasting is only possible because we model all series at once. If we instead would use an AR model and would consider two of the three series as exogenous (corresponding to an AutoRegressive Distributed Lag (ARDL) model), then we could not use recursive forecasting, because we would not know the future observations of the exogenous variables. This is a clear advantage of VAR models over AR models. 
 
-You can play around with VAR forecasts in the graph below. Change for example p, and see what you observe. What happens when you increase the horizon to a very large number? How do direct forecasts and recursive forecasts compare?
+You can play around with VAR forecasts in the graph below. Change for example $p$, and see what you observe. What happens when you increase the horizon to a very large number? How do direct forecasts and recursive forecasts compare?
 
 ```{r}
 forecast_var <- function(data, mod, n.ahead, p, ci, latest, variable){
@@ -609,7 +613,7 @@ checkboxInput("fcst_direct",
 ```
 :::
 
-What you should observe is that the forecast eventually ends up to be a straight line. This happens earlier for small p and only late for large p (for some it is not even observable in the graph above, but I can guarantee you that it will happen). This line will be located at the long-run average of the process. You can also play around with the seed at the beginning of the document, to see what happens if the data looks slightly different. If you are curious, the info box below discusses why this convergence happens.
+What you should observe is that the forecast eventually ends up to be a straight line. This happens earlier for small $p$ and only late for large $p$ (for some it is not even observable in the graph above, but I can guarantee you that it will happen). This line will be located at the long-run average of the process. You can also play around with the seed at the beginning of the document, to see what happens if the data looks slightly different. If you are curious, the info box below discusses why this convergence happens.
 
 ::: {.info}
 
@@ -644,17 +648,19 @@ $$
 
 But(!), as we noted at the beginning, $|\rho|<1$, and hence, when $h$ becomes very large, $\rho^h$ will become very small. More precisely, our forecast will actually approach a constant, zero in this case, since we demeaned the data before. 
 
-Exactly the same happens for VAR(p) models. We basically end up, using the companion form described in an earlier info box, with the forecast
+Exactly the same happens for VAR($p$) models. We basically end up, using the companion form described in an earlier info box, with the forecast
 
 $$
-\mathbb{E}[y_{t+h}|\mathcal{I}_t] = F^h y_{t}
+\mathbb{E}[\mathbf{y}_{t+h}|\mathcal{I}_t] = F^h \mathbf{y}_{t}
 $$
 
-But since our VAR is stable, the individual values in $F^h$ will become smaller and smaller, leading to the forecast very far in the future to converge to a constant, here again zero, since our data is demeaned. 
+where $\mathbf{y}$ is in bold to highlight that it is a vector. 
+
+Since our VAR is stable, the individual values in $F^h$ will become smaller and smaller, leading to the forecast very far in the future to converge to a constant, here again zero, since our data is demeaned. 
 
 :::
 
-## Evaluating Forecast Performance
+# Evaluating Forecast Performance
 
 In the previous section we looked at forecasting. There we also plotted a number of forecasts and their actual observed values. Based on these plots, some might now maybe think that they found a good forecasting model for their data. The problem with the above plot is though, that we trained the model on the full data and then checked what the forecasting performance is. Thus, the model had actually already seen the values it was supposed to forecast. This introduces a bias in the performance. If we truly would like to understand how the chosen model would perform in forecasting, we should likely test it on data it has not seen before. One famous method to do this is known under *rolling window estimation*. The figure below depicts this graphically. 
 
@@ -819,7 +825,7 @@ renderUI({
 :::
 
 
-## Granger Causality
+# Granger Causality
 
 So far, we discussed what VAR models are, their estimation and what to check after estimation, and how they can be used for forecasting. We are now slowly moving towards how they can be used to investigate what-if kind of questions and causality. Before we do this though, we first discuss a topic that lies somewhere in between forecasting and causality, a phenomenon termed Granger Causality. 
 
@@ -837,7 +843,7 @@ $$
 & \Phi_{2, GDP}\text{GDP}_{t-2} + \Phi_{2, CONS}\text{CONS}_{t-2} + \Phi_{2, INV}\text{INV}_{t-3} + \varepsilon_{\text{GDP}, t}
 \end{array}
 $$
-Testing for wether consumption Granger-causes GDP then corresponds to testing whether $\Phi_{1, CONS}=\Phi_{2, CONS}=0$. Thus, our null-hypothesis is that consumption does not Granger-cause GDP. 
+Testing for whether consumption Granger-causes GDP then corresponds to testing whether $\Phi_{1, CONS}=\Phi_{2, CONS}=0$. Thus, our null-hypothesis is that consumption does not Granger-cause GDP. 
 
 :::
 
@@ -907,7 +913,7 @@ renderPlot({
 ```
 
 
-## Impulse Response Analysis
+# Impulse Response Analysis
 
 Sometimes it is also of interest to investigate what a shock to one variable does to all the others. We can trace out these effects using an **Impulse Response Function (IRF)**. The graph below shows such an IRF for a one standard deviation shock to one variable to all the other variables. Play around and see how the variables are related. 
 
@@ -1058,11 +1064,11 @@ renderUI({
 renderText({
   paste0(
   "The above ordering implies that ", input$recursive_ordering[[1]],
-  " has a contemporanious effect on ", input$recursive_ordering[[2]], 
+  " has a contemporaneous effect on ", input$recursive_ordering[[2]], 
   " and ", input$recursive_ordering[[3]], 
   " while ", input$recursive_ordering[[2]], " can only effect ", 
   input$recursive_ordering[[3]], " within the same period. ", 
-  input$recursive_ordering[[3]], " has no contemporanious impact on any variable."
+  input$recursive_ordering[[3]], " has no contemporaneous impact on any variable."
   )
 })
 ```
@@ -1074,7 +1080,7 @@ To apply recursive orderings, we need to be able to sort the variables from slow
 
 A recursive ordering for the economic example with GDP, consumption, and investments could for example be based on the following (very simplified) argument:
 
-A strucural shock to either investments or consumption in this period also causes a reaction in GDP in this period. This just immediately follows from the accounting identity. A structural shock to investments might not immediately cause a reaction in consumption though, because it might take a while until the money that was spend on investments can actually be freed up by the receiver and spend on consumption. On the other hand, an structural shock to GDP might directly affect consumption in this period, because the money might be easier to free up and to be re-used for consumption. Lastly, investment decisions likely take a while until they are made. Thus neither a structural shock in consumption, nor in GDP might affect investments in this period. The delay from a firm having more money to invest, to it actually investing the money is likely longer than one period. 
+A structural shock to either investments or consumption in this period also causes a reaction in GDP in this period. This just immediately follows from the accounting identity. A structural shock to investments might not immediately cause a reaction in consumption though, because it might take a while until the money that was spend on investments can actually be freed up by the receiver and spend on consumption. On the other hand, an structural shock to GDP might directly affect consumption in this period, because the money might be easier to free up and to be re-used for consumption. Lastly, investment decisions likely take a while until they are made. Thus neither a structural shock in consumption, nor in GDP might affect investments in this period. The delay from a firm having more money to invest, to it actually investing the money is likely longer than one period. 
 
 If the above arguments are correct (which can always be discussed and in this simple example is likely not the case), then we could order our three variables from slowest to fastest as: Investments --> Consumption --> GDP. This ordering would then allows us to investigate what causal effect an unexpected increase / positive structural shock in GDP has on consumption and investments. A positive structural shock could for example be achieved by greater government spending.
 
@@ -1085,12 +1091,12 @@ Only if we can order the variables like described above, can we use the recursiv
 If we do an IRF investigation using recursive ordering, sometimes also referred to as orthogonalisation, then we interpret the shocks as structural and hence causal shocks. 
 
 
-## What's next?
+# What's next?
 
 Go through all the analysis above with your own data. 
 
 
-If you would like to use your own data for the analysis in this notebook, then your data must be available as a comma-separated-file (csv) and must fulfill the following criteria
+If you would like to use your own data for the analysis in this notebook, then your data must be available as a comma-separated-file (csv) and must fulfil the following criteria
 
 1. The first row must contain the variable names (please do not use too long names)
 2. The decimal point must be represented by a . (a dot). So not a , (comma) like common in the Netherlands, Germany, and some other countries

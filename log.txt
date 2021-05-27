@@ -1,0 +1,291 @@
+
+Listening on http://127.0.0.1:6809
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f31b52a82.html
+Warning: Error in renderPlot: Please select at least one variable.
+  171: stop
+  170: renderPlot [<text>#7]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out93558532297f1980
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in if: argument is of length zero
+  172: embed
+  171: vars::VAR
+  170: renderPlot [<text>#3]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out5d20345c211c7d05
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in if: argument is of length zero
+  172: embed
+  171: vars::VAR
+  170: renderPlot [<text>#16]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out55f80807c254b6d8
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in : In sliderInput(): `min`, `max`, and `value` cannot be NULL, NA, or empty.
+  102: stop
+  101: validate_slider_value
+  100: sliderInput
+   99: renderUI [<text>#11]
+   98: func
+   85: renderFunc
+   84: output$outc3564c34f4e8a04a
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in [[: attempt to select less than one element in get1index
+  187: <reactive> [<text>#4]
+  185: .func
+  182: contextFunc
+  181: env$runWith
+  174: ctx$run
+  173: self$.updateValue
+  171: forecast_var(data, mod, n.ahead, p, 0.99, latest, variable)
+  170: renderPlot [<text>#47]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$outd71e719c7d15e72c
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning in mean.default(resids^2, na.rm = TRUE) :
+  argument is not numeric or logical: returning NA
+Warning: Error in Ops.data.frame: ‘/’ only defined for equally-sized data frames
+  173: stop
+  172: Ops.data.frame
+  170: renderPlot [<text>#43]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out8f5f317cfd5f27d9
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in [[: attempt to select less than one element in get1index
+  171: cbind
+  170: renderPlot [<text>#75]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out7478e99d8043ad3c
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f31d215ce.html
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f6dea2bfe.html
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f282a4548.html
+Warning: Error in renderPlot: Please select at least one variable.
+  171: stop
+  170: renderPlot [<text>#7]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$outa7e8affce68dbba9
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in h: error in evaluating the argument 'object' in selecting a method for function 'summary': attempt to select less than one element in get1index
+  171: summary
+  170: renderPlot [<text>#4]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$outccd8d134877f46a8
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in <-: length of 'dimnames' [2] not equal to array extent
+  171: colnames<-
+  170: renderPlot [<text>#29]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out502f7aa609ee8230
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in [[: attempt to select less than one element in get1index
+  187: <reactive> [<text>#4]
+  185: .func
+  182: contextFunc
+  181: env$runWith
+  174: ctx$run
+  173: self$.updateValue
+  171: forecast_var(data, mod, n.ahead, p, 0.99, latest, variable)
+  170: renderPlot [<text>#47]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$outcc9e8c2eadef1e24
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning in mean.default(resids^2, na.rm = TRUE) :
+  argument is not numeric or logical: returning NA
+Warning: Error in Ops.data.frame: ‘/’ only defined for equally-sized data frames
+  173: stop
+  172: Ops.data.frame
+  170: renderPlot [<text>#43]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out7d0d5b2fab821a35
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning: Error in [[: attempt to select less than one element in get1index
+  171: cbind
+  170: renderPlot [<text>#75]
+  168: func
+  128: drawPlot
+  114: <reactive:plotObj>
+   98: drawReactive
+   85: renderFunc
+   84: output$out13de8eab5a58702f
+    4: <Anonymous>
+    2: rmarkdown::run
+    1: start_document [#2]
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 16 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 1 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 30 row(s) containing missing values (geom_path).
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f48346643.html
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 14 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6f7b06d9bb.html
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+
+
+
+processing file: SnT_VARs.Rmd
+output file: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/SnT_VARs.knit.md
+
+
+Output created: /private/var/folders/_j/nyvvfcq94rsdcl0dqn5c5tpr0000gn/T/Rtmp6gCKtG/file13f6fe03266d.html
+Warning: Removed 3 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+Warning: Using alpha for a discrete variable is not advised.
+Warning in data[, series] - rf$forecasts[, series] :
+  longer object length is not a multiple of shorter object length
+Warning: Removed 90 row(s) containing missing values (geom_path).
+Warning: Using alpha for a discrete variable is not advised.
+
+
+Warning message:
+In sink() : no sink to remove

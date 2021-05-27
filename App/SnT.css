@@ -36,6 +36,10 @@ table {
     margin: 10px auto;
 }
 
+.header-section-number{
+  color: var(--orange-red);
+}
+
 .section{
     margin: 0px auto;
     max-width: 100%;

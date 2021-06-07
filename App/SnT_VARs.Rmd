@@ -228,7 +228,10 @@ renderPlot({
   # if(is.null(selected_vars) | length(selected_vars)==0){
   #   selected_vars <- colnames(data)
   # }
-  if (length(input$selected_vars) == 0) stop("Please select at least one variable.")
+  validate(
+    need(length(input$selected_vars) != 0, "Please select at least one variable")
+  )
+  # if (length(input$selected_vars) == 0) stop("Please select at least one variable.")
   as_tibble(data) %>%
     dplyr::select_at(.vars = vars(as.character(input$selected_vars))) %>%
     dplyr::mutate(Time = 1:nrow(data)) %>%

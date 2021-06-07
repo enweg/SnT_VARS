@@ -101,7 +101,7 @@ numericInput(
 Using the seed above, we created a random data-set. Our data-set contains three variables. This might for example be investments, consumption, and GDP in an economic context. It could also be the price of three assets. The basic idea behind VAR models is that these series might be related to each other's past. In the macro context, GDP might not just depend on past GDP, but also on past investments and consumption. In the asset context, the price for one asset might not just depend on the past price of that asset but also on the past price of the other assets. VARs allow us to model this interdependency in a more inclusive way than AR models do. 
 
 
-In an AR model we would only be able to model one of the series and would have to assume that the others are exogenously given. This means, that we just, for some reason or another, have information on the other variables. VARs on the other hand model all variables at the same time. We therefore do not need to assume that any of the variables are exogenously given. This allows us to make longer horizon forecasts but also to investigate what an unexpected shock in one variable does to the others.
+In an AR model we would only be able to model one of the series and would have to assume that the others are exogenously given. This would be that the other variables (the ones we classify as exogenous) are independent of the current and past values of our endogenous variable. They are hence not affected by anything we are modelling are are thus given and driven by external (to the model) forces. This is a rather implausible assumption for the examples given above, since any economic variable likely depends on the others, and any asset price likely depends on the prices of all other assets. VARs on the other hand model all variables at the same time. We therefore do not need to assume that any of the variables are exogenously given. This allows us to make longer horizon forecasts but also to investigate what an unexpected shock in one variable does to the others.
 
 
 :::{.info}
@@ -121,7 +121,8 @@ $$
 \Phi_1 \left[\begin{array}[l] \text{GDP}_{t-1} \\ \text{CONS}_{t-1} \\ \text{INV}_{t-1} \end{array}\right] + 
 \Phi_2 \left[\begin{array}[l] \text{GDP}_{t-2} \\ \text{CONS}_{t-2} \\ \text{INV}_{t-2} \end{array}\right] + \varepsilon_t
 $$
-This is equivalent to saying that GDP today can be modelled as depending on GDP in the last period, but also two periods ago. Moreover, GDP in this period also depends on consumption and investment in the last two periods. Similarly for consumption and investments. This kind of behaviour is often present in economics and business, since processes are often sluggish and need time to adjust to changes. For example, investments might lag behind GDP, because it takes time for businesses to make investment decisions. Thus, even if GDP and hence in a simple world the income of firms increases in this period, investments might not increase in the same period, because management first needs to make a decision on what to invest in, and this might take one, two, or even more periods.
+
+This is equivalent to saying that GDP today can be modelled as depending on GDP in the last period, but also two periods ago. Moreover, GDP in this period also depends on consumption and investment in the last two periods. Similarly for consumption and investments. This kind of behaviour is often present in economics and business, since processes are often sluggish and need time to adjust to changes. For example, investments might lag behind GDP, because it takes time for businesses to make investment decisions. Thus, even if GDP - and hence in a simple world the income of firms - increases in this period, investments might not increase in the same period, because management first needs to make a decision on what to invest in, and this might take one, two, or even more periods.
 
 The problem with the above representation of a VAR($p$) model is, that it quickly becomes messy and difficult to analyse. For example, written in the general form, it is difficult to say whether a VAR($p$) model is *stable* and *stationary*. We will come back to what these two mean.
 
@@ -850,7 +851,7 @@ Testing for whether consumption Granger-causes GDP then corresponds to testing w
 
 :::
 
-You can investigate below which variables Granger-cause which in the simulated data set. An arrow from one variable, $x$, to a variable, $y$, means that $x$ Granger-causes $y$.
+You can investigate below which variables Granger-cause which in the simulated data set. An arrow from one variable, $x$, to a variable, $y$, means that $x$ Granger-causes $y$. Please note, for the sake of keeping this section simple, we only investigate Granger-Causality in a VAR(2) model here, but the idea generalises to higher order VARs.
 
 You can also control for multiple testing. This is done via the Bonferroni Correction and is highly recommended. To build these kind of Granger-causality networks, many hypothesis need to be run, which, without additional corrections, can lead to many false discoveries. To protect ourselves against it, we can use the Bonferroni correction, which only rejects a hypothesis if its p-value is below $\alpha/k$ where $\alpha$ is the desired significance level, and $k$ is the number of hypothesis we test.
 

@@ -12,7 +12,7 @@ The notebook does not go too much in depth and could therefore be used as a firs
 
 The interactive notebook can be used in various forms. The easiest is to open the notebook on binder. This can be done by using one of the following links. The first only opens the notebook on mybinder.org. 
 
-> :info: Please be aware that the loading process can take a while. By clicking on on the *show* button, you can see what is going on.
+> Please be aware that the loading process can take a while. By clicking on on the *show* button, you can see what is going on.
 
 The scond link opens a complete RStudio session on mybinder.org. This is needed if you wish to use the notebook with your own data, as the first link does not support this functionality due to security reasons. For instructions on how to start the notebook ones you are in RStudio, please follow the intructions for the downloaded version (see below).
 
@@ -22,9 +22,11 @@ The scond link opens a complete RStudio session on mybinder.org. This is needed 
 The third way to use the notebook is to download the repository and to start the notebook locally. This is also the only option that does not require any internet connection. Since this is the more complicated way, below is a more detailed description on how this can be done:
 
 1. Download the repository
-2. Open the project in RStudio
-3. Open the *start_app.R* script
-4. Run the script
+![](./Readme-Figures/Step-1.gif)
+2. Open the *start_app.R* script in RStudio
+![](./Readme-Figures/Step-2.gif)
+4. Highlight everything and press *run*
+![](./Readme-Figures/Step-3.gif)
 
 ## Problems, Suggestions, and Corrections
 
